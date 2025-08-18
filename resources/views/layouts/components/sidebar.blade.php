@@ -1,0 +1,36 @@
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu">
+						<ul>
+							<li class="menu-title"> 
+								<span>Main</span>
+							</li>
+							<li class="active"> 
+								<a href="index.html"><i class="fe fe-home"></i> <span>Dashboard</span></a>
+							</li>
+							<li> 
+								<a href="components.html"><i class="fe fe-cart"></i> <span>Borrowing</span></a>
+							</li>
+							<li> 
+								<a href="components.html"><i class="fe fe-shopping-bag"></i> <span>Reservation</span></a>
+							</li>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-users"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="tables-basic.html">All Students</a></li>
+									<li><a href="data-tables.html">Add New Student</a></li>
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><i class="fe fe-book"></i> <span> Books</span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="tables-basic.html">All Books</a></li>
+									<li><a href="data-tables.html">Add New Book</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
