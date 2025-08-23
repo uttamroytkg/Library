@@ -4,7 +4,7 @@
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Library Management System</title>
+        <title>@yield('title', 'Library Management System')</title>
 		
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="{{ asset('assets/css/feathericon.min.css') }}">
 		
 		<link rel="stylesheet" href="{{ asset('assets/plugins/morris/morris.css') }}">
+
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -27,6 +30,19 @@
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+		<style>
+			.book-cover-image{
+				width: 5rem;
+				height: 7rem;
+			}
+			.book-cover-image > img{
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+		</style>
+
+		@stack('css')
     </head>
     <body>
 	
@@ -65,9 +81,14 @@
 		<script src="{{ asset('assets/plugins/raphael/raphael.min.js') }}"></script>    
 		<script src="{{ asset('assets/plugins/morris/morris.min.js') }}"></script>  
 		<script src="{{ asset('assets/js/chart.morris.js') }}"></script>
+
+		<!-- Datatables JS -->
+		<script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+		<script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 		
 		<!-- Custom JS -->
 		<script  src="{{ asset('assets/js/script.js') }}"></script>
+		@stack('script')
 		
     </body>
 
