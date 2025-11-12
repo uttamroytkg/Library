@@ -30,7 +30,6 @@
 										<h4 class="user-name mb-0">{{ $student->name }}</h4>
 										<h6 class="text-muted">{{ $student->email }}</h6>
 										<div class="user-Location"><i class="fa fa-map-marker"></i> {{ $student->address }}</div>
-										{{-- <div class="about-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div> --}}
 									</div>
 									<div class="col-auto profile-btn">
 										

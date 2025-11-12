@@ -31,5 +31,6 @@ abstract class Controller
             $filePath = rtrim($path, '/') . '/' . $fileName;
             return $filePath;
         }
+        return false;
     }
 }

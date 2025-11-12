@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use Carbon\Carbon;
+// use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +14,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = DB::table('books') -> get();
+        $books = DB::table('books') 
+                -> orderBy('created_at', 'desc')
+                -> get();
         return view('book.index', [
             'books' => $books
         ]);
@@ -57,7 +59,7 @@ class BookController extends Controller
             'copies' => $request->copies,
             'available_copy' => $request->copies,
             'cover' => $cover_path,
-            'created_at' => Carbon::now('Asia/Dhaka'),
+            'created_at' => now(),
         ]);
 
         return back()->with('success', 'Books created Successfully!');
@@ -136,7 +138,7 @@ class BookController extends Controller
             'copies' => $request->copies,
             'available_copy' => $request->available_copy,
             'cover' => $cover_path,
-            'updated_at' => Carbon::now('Asia/Dhaka'),
+            'updated_at' => now(),
         ]);
 
 

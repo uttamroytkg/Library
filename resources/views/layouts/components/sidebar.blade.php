@@ -6,11 +6,11 @@
 							<li class="menu-title"> 
 								<span>Main</span>
 							</li>
-							<li class="active"> 
+							<li class="{{ Request::is('/') ? 'active' : ''}}"> 
 								<a href="{{ url('/') }}"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 							</li>
-							<li> 
-								<a href="components.html"><i class="fe fe-cart"></i> <span>Borrowing</span></a>
+							<li class="{{ Request::is('borrow') ? 'active' : ''}}"> 
+								<a href="{{ route('borrow.index') }}"><i class="fe fe-cart"></i> <span>Borrowing</span></a>
 							</li>
 							<li> 
 								<a href="components.html"><i class="fe fe-shopping-bag"></i> <span>Reservation</span></a>
@@ -18,15 +18,15 @@
 							<li class="submenu">
 								<a href="javascript:void(0);"><i class="fe fe-users"></i> <span> Students</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="{{ route('student.index') }}">All Students</a></li>
-									<li><a href="{{ route('student.create') }}">Add New Student</a></li>
+									<li><a class="{{ Request::is('student') ? 'active' : ''}}" href="{{ route('student.index') }}">All Students</a></li>
+									<li><a class="{{ Request::is('student/create') ? 'active' : ''}}" href="{{ route('student.create') }}">Add New Student</a></li>
 								</ul>
 							</li>
 							<li class="submenu">
 								<a href="javascript:void(0);"><i class="fe fe-book"></i> <span> Books</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="{{ route('book.index') }}">All Books</a></li>
-									<li><a href="{{ route('book.create') }}">Add New Book</a></li>
+									<li><a class="{{ Request::is('book') ? 'active' : ''}}" href="{{ route('book.index') }}">All Books</a></li>
+									<li><a class="{{ Request::is('book/create') ? 'active' : ''}}" href="{{ route('book.create') }}">Add New Book</a></li>
 								</ul>
 							</li>
 						</ul>

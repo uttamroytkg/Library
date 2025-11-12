@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use Carbon\Carbon;
+// use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +14,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = DB::table('students') -> get();
+        $students = DB::table('students') 
+                    -> orderBy('created_at', 'desc')
+                    -> get();
         return view('student.index', [
             'students' => $students
         ]);
@@ -61,8 +63,7 @@ class StudentController extends Controller
             'student_id' => $request->student_id,
             'address' => $request->address,
             'photo' => $profile_path,
-            'created_at' => Carbon::now('Asia/Dhaka'),
-            // 'created_at' => now(),
+            'created_at' => now(),
         ]);
 
         return back()->with('success', 'Student created Successfully!');
@@ -141,7 +142,7 @@ class StudentController extends Controller
             'student_id' => $request->student_id,
             'address' => $request->address,
             'photo' => $profile_path,
-            'updated_at' => Carbon::now('Asia/Dhaka'),
+            'updated_at' => now(),
         ]);
 
 

@@ -40,6 +40,10 @@
 				height: 100%;
 				object-fit: contain;
 			}
+			.submenu > a.active{
+				    background-color: #00d0f1;
+					color: #fff;
+			}
 		</style>
 
 		@stack('css')

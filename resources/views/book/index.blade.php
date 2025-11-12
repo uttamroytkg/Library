@@ -35,6 +35,7 @@
 													<th>ISBN</th>
 													<th>Copies</th>
 													<th>Available Copies</th>
+													<th>Created Time</th>
 													<th>Action</th>
 												</tr>
 											</thead>
@@ -52,6 +53,7 @@
 													<td>{{ $book->isbn }}</td>
 													<td>{{ $book->copies }}</td>
 													<td>{{ $book->available_copy }}</td>
+													<td>{{ \Carbon\Carbon::parse($book->created_at)->diffForHumans() }}</td>
 													<td>
                                                         <div class="actions">
 															<a class="btn btn-sm bg-success-light" href="{{ route('book.show', $book->id) }}">
