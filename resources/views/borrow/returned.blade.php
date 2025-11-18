@@ -1,15 +1,16 @@
 @extends('layouts.app')
-@section('title', 'LMS | All Borrows')
+@section('title', 'LMS | All Returned Borrows')
 
 @section('main')
                     <!-- Page Header -->
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title">All Borrowing</h3>
+								<h3 class="page-title">All Returned Borrowing</h3>
 								<ul class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Borrows</li>
+                                    <li class="breadcrumb-item"><a href="{{ route('borrow.index') }}">Borrows</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Returned Borrows</li>
 								</ul>
 							</div>
 						</div>
@@ -19,10 +20,7 @@
 					{{-- Borrows Table  --}}
 					<div class="row">
                         <div class="col-12">
-                            <div class="d-flex align-items-center justify-content-between row-gap-3 column-gap-4 flex-wrap">
-								<a class="btn btn-primary mb-3" href="{{ route('borrow.search') }}">Add new Borrow</a>
-								<a class="btn btn-primary mb-3" href="{{ route('returned.borrows') }}">Returned Borrows</a>
-							</div>
+                            <a class="btn btn-primary mb-3" href="{{ route('borrow.index') }}">Back to Borrows</a>
                         </div>
 						<div class="col-sm-12">
 							<div class="card">
@@ -59,14 +57,8 @@
 														</h2>
                                                     </td>
 													<td>
-														@php
-															$returnDate = \Carbon\Carbon::parse($borrow->return_date);
-															$isOverdue = $returnDate->isPast() && !$returnDate->isToday(); 
-															$status = $isOverdue ? 'Overdue' : ($borrow->status ?? 'Pending');
-														@endphp
-
-														<span class="badge {{ $isOverdue ? 'badge-danger' : 'badge-warning' }}">
-															{{ ucfirst($status) }}
+														<span class="badge badge-success">
+															{{ ucfirst($borrow->status) }}
 														</span>
 													</td>
 													<td>{{ date('F d, Y', strtotime($borrow->issue_date)) }}</td>
@@ -75,17 +67,17 @@
 													<td>
                                                         <div class="actions">
 															<a class="btn btn-sm bg-success-light" href="{{ route('borrow.return', $borrow->id) }}">
-																Make Return
+																Make Pending
 															</a>
-															<a class="btn btn-sm bg-warning-light" href="{{ route('borrow.edit', $borrow->id) }}">
-																<i class="fe fe-pencil"></i> edit
+															<a class="btn btn-sm bg-warning-light" href="{{ route('borrow.destroy', $borrow->id) }}">
+																<i class="fe fe-trash"></i> Delete
 															</a>
 														</div>
                                                     </td>
 												</tr>
                                                  @empty
 												<tr>
-													<td colspan="8" class="text-center text-muted">No borrow available</td>
+													<td colspan="8" class="text-center text-muted">No returned borrows available</td>
 												</tr>
 												@endforelse
 											</tbody>

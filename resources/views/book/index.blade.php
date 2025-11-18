@@ -72,7 +72,7 @@
 												</tr>
                                                  @empty
 												<tr>
-													<td colspan="7" class="text-center text-muted">No books available</td>
+													<td colspan="8" class="text-center text-muted">No books available</td>
 												</tr>
 												@endforelse
 											</tbody>

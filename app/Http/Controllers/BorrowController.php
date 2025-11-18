@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Borrow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BorrowController extends Controller
 {
@@ -14,6 +15,10 @@ class BorrowController extends Controller
     public function index()
     {
         $borrows = DB::table('borrows')
+            ->where('status', 'pending')
+            ->join('students', 'borrows.student_id', '=', 'students.id')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'students.name', 'students.photo', 'books.title', 'books.cover', 'students.created_at as student_created')
             ->orderBy('return_date', 'asc')
             ->get();
         return view('borrow.index', ['borrows' => $borrows]);
@@ -59,17 +64,55 @@ class BorrowController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Borrow $borrow)
+    public function edit($id)
     {
-        //
+        $borrow = DB::table('borrows')
+                ->join('books', 'borrows.book_id', '=', 'books.id')
+                ->where('borrows.id', $id)   
+                ->select('borrows.*', 'books.id as selected_book_id', 'books.cover as book_cover')
+                ->first();
+
+        if (!$borrow) {
+            abort(404);
+        }
+
+        $books = DB::table('books')
+            -> get();
+
+        return view('borrow.edit', [
+            'borrow' => $borrow,
+            'books' => $books,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Borrow $borrow)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'return_date'  => 'required|date|after_or_equal:today',
+        ]);
+
+        $borrow = DB::table('borrows')->where('id', $id)->first();
+
+        if(!$borrow){
+            return back()->with('error', 'Borrow record not found');
+        }
+
+        if(Carbon::parse($request->return_date)->lt($borrow->issue_date)){
+            return back()->with('error', 'Return date must be greater then Issue date');
+        }
+
+        DB::table('borrows')
+            ->where('id', $id)
+            ->update([
+                'return_date' => $request->return_date,
+                'book_id' => $request->book_id,
+                'updated_at' => now(),
+            ]);
+
+        return back()->with('success', 'Borrow Update Successful!');
     }
 
     /**
@@ -137,6 +180,64 @@ class BorrowController extends Controller
             'student' => $student,
             'books' => $books,
         ]);
+    }
+
+    /**
+     * Borrow Return
+     */
+    public function borrowReturn($id){
+        DB::table('borrows')
+            ->where('id', $id)
+            ->update([
+                'status' => 'returned'
+            ]);
+
+            return back()->with('success', 'Book returned');
+
+    }
+
+    /**
+     * Borrow Return Time Increase
+     */
+    // public function borrowTimeIncrease(Request $request, $id){
+
+    //     $request->validate([
+    //         'return_date'  => 'required|date|after_or_equal:today',
+    //     ]);
+
+    //     $borrow = DB::table('borrows')->where('id', $id)->first();
+
+    //     if(!$borrow){
+    //         return back()->with('error', 'Borrow record not found');
+    //     }
+
+    //     if(Carbon::parse($request->return_date)->lt($borrow->issue_date)){
+    //         return back()->with('error', 'Return date must be greater then Issue date');
+    //     }
+
+    //     DB::table('borrows')
+    //         ->where('id', $id)
+    //         ->update([
+    //             'return_date' => $request->return_date
+    //         ]);
+
+    //         return back()->with('success', 'Return date updated');
+
+    // }
+
+    /**
+     * Display a listing of returned borrows.
+     */
+    public function returnedBorrows()
+    {
+        $borrows = DB::table('borrows')
+            ->where('status', 'returned')
+            ->join('students', 'borrows.student_id', '=', 'students.id')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'students.name', 'students.photo', 'books.title', 'books.cover', 'students.created_at as student_created')
+            ->orderBy('return_date', 'asc')
+            ->get();
+        return view('borrow.returned', ['borrows' => $borrows]);
     }
 
 }
