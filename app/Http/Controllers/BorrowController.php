@@ -118,9 +118,19 @@ class BorrowController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Borrow $borrow)
+    public function destroy($id)
     {
-        //
+        $borrow = DB::table('borrows')->where('id', $id)->where('status', 'returned')->first();
+
+        if(!$borrow){
+            abort(404);
+        }
+
+        DB::table('borrows')
+            ->where('id', $id)
+            ->delete();
+
+        return back()->with('success', 'Borrow Deleted Successfully!');
     }
 
     /**
@@ -186,14 +196,37 @@ class BorrowController extends Controller
      * Borrow Return
      */
     public function borrowReturn($id){
-        DB::table('borrows')
+        $status = DB::table('borrows')
             ->where('id', $id)
             ->update([
-                'status' => 'returned'
+                'status' => 'returned',
+                'updated_at' => now(),
             ]);
 
-            return back()->with('success', 'Book returned');
+        if(!$status){
+            abort(404);
+        }
 
+        return back()->with('success', 'Book returned');
+
+    }
+
+    /**
+     * Borrow Pending
+     */
+    public function borrowPending($id){
+        $status = DB::table('borrows')
+            ->where('id', $id)
+            ->update([
+                'status' => 'pending',
+                'updated_at' => now(),
+            ]);
+
+        if(!$status){
+            abort(404);
+        }
+
+        return back()->with('success', 'Book pending');
     }
 
     /**
@@ -237,6 +270,7 @@ class BorrowController extends Controller
             ->select('borrows.*', 'students.name', 'students.photo', 'books.title', 'books.cover', 'students.created_at as student_created')
             ->orderBy('return_date', 'asc')
             ->get();
+
         return view('borrow.returned', ['borrows' => $borrows]);
     }
 

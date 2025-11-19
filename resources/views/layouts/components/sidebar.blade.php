@@ -12,9 +12,6 @@
 							<li class="{{ Request::is('borrow') ? 'active' : ''}}"> 
 								<a href="{{ route('borrow.index') }}"><i class="fe fe-cart"></i> <span>Borrowing</span></a>
 							</li>
-							<li> 
-								<a href="components.html"><i class="fe fe-shopping-bag"></i> <span>Reservation</span></a>
-							</li>
 							<li class="submenu">
 								<a href="javascript:void(0);"><i class="fe fe-users"></i> <span> Students</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">

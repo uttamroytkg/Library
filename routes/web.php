@@ -21,5 +21,6 @@ Route::post("/borrow-search-student", [BorrowController::class, "searchStudent"]
 Route::get("/borrow-search-student", [BorrowController::class, "searchStudentGet"]) -> name("borrow.search-student.get");
 Route::get("/borrow-assign/{id}", [BorrowController::class, "borrowAssign"]) -> name("borrow.assign");
 Route::get("/borrow-return/{id}", [BorrowController::class, "borrowReturn"]) -> name("borrow.return");
+Route::get("/borrow-pending/{id}", [BorrowController::class, "borrowPending"]) -> name("borrow.pending");
 // Route::put("/borrow-time-increase/{id}", [BorrowController::class, "borrowTimeIncrease"]) -> name("borrow.time-increase");
 Route::get("/returned-borrows", [BorrowController::class, "returnedBorrows"]) -> name("returned.borrows");

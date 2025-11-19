@@ -34,8 +34,8 @@
 													<th>Student</th>
 													<th>Book</th>
 													<th>Status</th>
+													<th>Returned Date</th>
 													<th>Issue Date</th>
-													<th>Return Date</th>
 													<th>Created at</th>
 													<th>Action</th>
 												</tr>
@@ -61,17 +61,22 @@
 															{{ ucfirst($borrow->status) }}
 														</span>
 													</td>
+													<td>{{ date('F d, Y', strtotime($borrow->updated_at)) }}</td>
 													<td>{{ date('F d, Y', strtotime($borrow->issue_date)) }}</td>
-													<td>{{ ceil(\Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($borrow->return_date, false))) }} Days</td>
 													<td>{{ \Carbon\Carbon::parse($borrow->created_at)->diffForHumans() }}</td>
 													<td>
                                                         <div class="actions">
-															<a class="btn btn-sm bg-success-light" href="{{ route('borrow.return', $borrow->id) }}">
+															<a class="btn btn-sm bg-success-light" href="{{ route('borrow.pending', $borrow->id) }}">
 																Make Pending
 															</a>
-															<a class="btn btn-sm bg-warning-light" href="{{ route('borrow.destroy', $borrow->id) }}">
+															<form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST" class="d-inline">
+																@csrf
+																@method('DELETE')
+																<button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure?')"><i class="fe fe-trash"></i> Delete</button>
+															</form>
+															{{-- <a class="btn btn-sm bg-warning-light" onclick="return confirm('Are you sure?')" href="{{ route('borrow.destroy', $borrow->id) }}">
 																<i class="fe fe-trash"></i> Delete
-															</a>
+															</a> --}}
 														</div>
                                                     </td>
 												</tr>
