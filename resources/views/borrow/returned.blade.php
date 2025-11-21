@@ -74,9 +74,6 @@
 																@method('DELETE')
 																<button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure?')"><i class="fe fe-trash"></i> Delete</button>
 															</form>
-															{{-- <a class="btn btn-sm bg-warning-light" onclick="return confirm('Are you sure?')" href="{{ route('borrow.destroy', $borrow->id) }}">
-																<i class="fe fe-trash"></i> Delete
-															</a> --}}
 														</div>
                                                     </td>
 												</tr>

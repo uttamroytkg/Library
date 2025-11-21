@@ -70,7 +70,8 @@
 														</span>
 													</td>
 													<td>{{ date('F d, Y', strtotime($borrow->issue_date)) }}</td>
-													<td>{{ ceil(\Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($borrow->return_date, false))) }} Days</td>
+													<td>{{ date('F d, Y', strtotime($borrow->return_date)) }}</td>
+													{{-- <td>{{ ceil(\Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::parse($borrow->return_date, false))) }} Days</td> --}}
 													<td>{{ \Carbon\Carbon::parse($borrow->created_at)->diffForHumans() }}</td>
 													<td>
                                                         <div class="actions">

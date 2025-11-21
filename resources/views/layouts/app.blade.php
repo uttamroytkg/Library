@@ -44,6 +44,14 @@
 				    background-color: #00d0f1;
 					color: #fff;
 			}
+			.card-student-img{
+				aspect-ratio: 1 / 1;
+				object-fit: cover;
+			}
+			.card-book-cover{
+				aspect-ratio: 1 / 1.2;
+    			object-fit: cover;
+			}
 		</style>
 
 		@stack('css')

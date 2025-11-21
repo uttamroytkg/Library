@@ -40,6 +40,7 @@
                                                 <option value="{{ $book->id }}" @if($borrow->selected_book_id == $book->id) selected @endif>{{ $book->title }}</option>
                                                 @endforeach
                                             </select>
+                                            <input type="hidden" name="old_book" value="{{ $borrow->book_id }}">
                                         </div>
 										<div>
 											<button type="submit" class="btn btn-primary">Update Now</button>

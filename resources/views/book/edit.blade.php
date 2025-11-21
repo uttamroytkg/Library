@@ -40,10 +40,7 @@
                                         <div class="form-group">
                                             <label>Copies</label>
                                             <input type="text" name="copies" class="form-control" value="{{ $book->copies }}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Available Copies</label>
-                                            <input type="text" name="available_copy" class="form-control" value="{{ $book->available_copy }}">
+											<p class="mt-1" style="font-size: 14px">Available Copies {{ $book->available_copy }}</p>
                                         </div>
                                         <div class="form-group">
                                             <label>Current Book Cover</label>

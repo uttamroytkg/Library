@@ -47,7 +47,7 @@
                         @forelse ($students as $student)
                         <div class="col-12 col-sm-6 col-lg-4 col-xl-3 d-flex">
                             <div class="card flex-fill">
-                                <img alt="Card Image" src="{{ URL::to($student->photo) }}" class="card-img-top">
+                                <img alt="Card Image" src="{{ URL::to($student->photo) }}" class="card-img-top card-student-img">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">{{ $student->name }}</h5>
                                 </div>

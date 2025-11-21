@@ -76,8 +76,16 @@ class BookController extends Controller
             abort(404);
         }
 
+        $students = DB::table('borrows')
+                    ->where('book_id', $id)
+                    ->where('status', 'pending')
+                    ->join('students', 'borrows.student_id', '=', 'students.id')
+                    ->select('students.*', 'borrows.issue_date', 'borrows.return_date')
+                    ->get();
+
         return view('book.show', [
-            'book' => $book
+            'book' => $book,
+            'students' => $students,
         ]);
     }
 
@@ -108,13 +116,32 @@ class BookController extends Controller
             'author'  => 'required|string|max:255',
             'isbn'    => 'required|string|max:20|unique:books,isbn,' . $id,
             'copies'  => 'required|integer|min:1',
-            'available_copy'  => 'required|integer|min:1',
             'cover'   => 'nullable|image|mimes:jpeg,png,jpg,svg,gif|max:2048',
         ]);
 
         $book = DB::table('books') -> where('id', $id) -> first();
         if (!$book) {
             abort(404);
+        }
+
+        $oldCopies = $book->copies;
+        $newCopies = $request->copies;
+        $available_copy = $book->available_copy;
+
+        // ---- Available Copies set ---- //
+        if ($newCopies > $oldCopies) {
+            $diff = $newCopies - $oldCopies;
+            $available_copy = $available_copy + $diff;
+
+        } elseif ($newCopies < $oldCopies) {
+            $diff = $oldCopies - $newCopies;
+
+            // Check: Available copy cannot be negative
+            if ($available_copy - $diff < 0) {
+                return back()->with('error', 'Available copy cannot be negative!');
+            }
+
+            $available_copy = $available_copy - $diff;
         }
 
         $cover_path = $book->cover;
@@ -135,8 +162,8 @@ class BookController extends Controller
             'title' => $request->title,
             'author' => $request->author,
             'isbn' => $request->isbn,
-            'copies' => $request->copies,
-            'available_copy' => $request->available_copy,
+            'copies' => $newCopies,
+            'available_copy' => $available_copy,
             'cover' => $cover_path,
             'updated_at' => now(),
         ]);

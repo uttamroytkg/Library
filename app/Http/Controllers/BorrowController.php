@@ -50,6 +50,10 @@ class BorrowController extends Controller
             'created_at' => now(),
         ]);
 
+        DB::table('books')
+            ->where('id', $request->book_id)
+            ->decrement('available_copy', 1);
+
         return back()->with('success', 'Book Assign Successful!');
     }
 
@@ -77,6 +81,7 @@ class BorrowController extends Controller
         }
 
         $books = DB::table('books')
+            ->where('available_copy', '>', 0)
             -> get();
 
         return view('borrow.edit', [
@@ -102,6 +107,16 @@ class BorrowController extends Controller
 
         if(Carbon::parse($request->return_date)->lt($borrow->issue_date)){
             return back()->with('error', 'Return date must be greater then Issue date');
+        }
+
+        if($request->book_id != $request->old_book){
+            DB::table('books')
+                ->where('id', $request->book_id)
+                ->decrement('available_copy', 1);
+
+            DB::table('books')
+                ->where('id', $request->old_book)
+                ->increment('available_copy', 1);
         }
 
         DB::table('borrows')
@@ -184,6 +199,7 @@ class BorrowController extends Controller
         }
 
         $books = DB::table('books')
+            ->where('available_copy', '>', 0)
             -> get();
 
         return view('borrow.assign_book', [
@@ -196,67 +212,52 @@ class BorrowController extends Controller
      * Borrow Return
      */
     public function borrowReturn($id){
-        $status = DB::table('borrows')
+    
+        $borrow = DB::table('borrows')->where('id', $id)->first();
+
+        if(!$borrow){
+            abort(404);
+        }
+
+        DB::table('borrows')
             ->where('id', $id)
             ->update([
                 'status' => 'returned',
                 'updated_at' => now(),
             ]);
 
-        if(!$status){
-            abort(404);
-        }
+        // Increase book copy
+        DB::table('books')
+            ->where('id', $borrow->book_id)
+            ->increment('available_copy', 1);
 
         return back()->with('success', 'Book returned');
-
     }
 
     /**
      * Borrow Pending
      */
     public function borrowPending($id){
-        $status = DB::table('borrows')
+        $borrow = DB::table('borrows')->where('id', $id)->first();
+
+        if(!$borrow){
+            abort(404);
+        }
+
+        DB::table('borrows')
             ->where('id', $id)
             ->update([
                 'status' => 'pending',
                 'updated_at' => now(),
             ]);
 
-        if(!$status){
-            abort(404);
-        }
+        // decrement book copy
+        DB::table('books')
+            ->where('id', $borrow->book_id)
+            ->decrement('available_copy', 1);
 
         return back()->with('success', 'Book pending');
     }
-
-    /**
-     * Borrow Return Time Increase
-     */
-    // public function borrowTimeIncrease(Request $request, $id){
-
-    //     $request->validate([
-    //         'return_date'  => 'required|date|after_or_equal:today',
-    //     ]);
-
-    //     $borrow = DB::table('borrows')->where('id', $id)->first();
-
-    //     if(!$borrow){
-    //         return back()->with('error', 'Borrow record not found');
-    //     }
-
-    //     if(Carbon::parse($request->return_date)->lt($borrow->issue_date)){
-    //         return back()->with('error', 'Return date must be greater then Issue date');
-    //     }
-
-    //     DB::table('borrows')
-    //         ->where('id', $id)
-    //         ->update([
-    //             'return_date' => $request->return_date
-    //         ]);
-
-    //         return back()->with('success', 'Return date updated');
-
-    // }
 
     /**
      * Display a listing of returned borrows.

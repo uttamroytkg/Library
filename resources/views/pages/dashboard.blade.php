@@ -23,11 +23,11 @@
 											<i class="fe fe-users"></i>
 										</span>
 										<div class="dash-count">
-											<h3>168</h3>
+											<h3>{{ isset($students) ? $students->count() : 0 }}</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
-										<h6 class="text-muted">Doctors</h6>
+										<h6 class="text-muted">Students</h6>
 										<div class="progress progress-sm">
 											<div class="progress-bar bg-primary w-50"></div>
 										</div>
@@ -43,35 +43,14 @@
 											<i class="fe fe-credit-card"></i>
 										</span>
 										<div class="dash-count">
-											<h3>487</h3>
+											<h3>{{ isset($books) ? $books->count() : 0 }}</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
 										
-										<h6 class="text-muted">Patients</h6>
+										<h6 class="text-muted">Books</h6>
 										<div class="progress progress-sm">
 											<div class="progress-bar bg-success w-50"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-3 col-sm-6 col-12">
-							<div class="card">
-								<div class="card-body">
-									<div class="dash-widget-header">
-										<span class="dash-widget-icon text-danger border-danger">
-											<i class="fe fe-money"></i>
-										</span>
-										<div class="dash-count">
-											<h3>485</h3>
-										</div>
-									</div>
-									<div class="dash-widget-info">
-										
-										<h6 class="text-muted">Appointment</h6>
-										<div class="progress progress-sm">
-											<div class="progress-bar bg-danger w-50"></div>
 										</div>
 									</div>
 								</div>
@@ -85,14 +64,35 @@
 											<i class="fe fe-folder"></i>
 										</span>
 										<div class="dash-count">
-											<h3>$62523</h3>
+											<h3>{{ isset($borrows) ? $borrows->count() : 0 }}</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
 										
-										<h6 class="text-muted">Revenue</h6>
+										<h6 class="text-muted">Borrows</h6>
 										<div class="progress progress-sm">
 											<div class="progress-bar bg-warning w-50"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-sm-6 col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-danger border-danger">
+											<i class="fe fe-money"></i>
+										</span>
+										<div class="dash-count">
+											<h3>{{ isset($overdue_count) ? $overdue_count : 0 }}</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										
+										<h6 class="text-muted">Overdue Borrows</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-danger w-50"></div>
 										</div>
 									</div>
 								</div>

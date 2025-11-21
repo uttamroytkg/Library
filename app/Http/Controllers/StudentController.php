@@ -48,10 +48,6 @@ class StudentController extends Controller
         // Photo upload
         $profile_path = null;
         if ($request->hasFile('photo')) {
-            // $image = $request->file('photo');
-            // $imageName = 'student-photo' . time() . rand(99, 999) . '.' . $image->getClientOriginalExtension();
-            // $image->move(public_path('upload/user'), $imageName);
-            // $profile_path = 'upload/user/' . $imageName;
             $profile_path = $this -> fileUpload($request->file('photo'), 'upload/user', 'student-profile');
         }
 
@@ -80,8 +76,16 @@ class StudentController extends Controller
             abort(404);
         }
 
+        $borrows = DB::table('borrows')
+                    ->where('student_id', $id)
+                    ->where('status', 'pending')
+                    ->join('books', 'borrows.book_id', '=', 'books.id')
+                    ->select('borrows.*', 'books.title as book_title', 'books.author as book_author', 'books.cover as book_cover', 'books.isbn as book_isbn')
+                    ->get();
+
         return view('student.show', [
-            'student' => $student
+            'student' => $student,
+            'borrows' => $borrows,
         ]);
     }
 
