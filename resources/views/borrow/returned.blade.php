@@ -69,11 +69,9 @@
 															<a class="btn btn-sm bg-success-light" href="{{ route('borrow.pending', $borrow->id) }}">
 																Make Pending
 															</a>
-															<form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST" class="d-inline">
-																@csrf
-																@method('DELETE')
-																<button type="submit" class="btn btn-sm bg-danger-light" onclick="return confirm('Are you sure?')"><i class="fe fe-trash"></i> Delete</button>
-															</form>
+															<a class="btn btn-sm bg-danger-light" data-url="{{ route('borrow.destroy', $borrow->id) }}" data-toggle="modal" href="#delete_modal">
+																<i class="fe fe-trash"></i> Delete
+															</a>
 														</div>
                                                     </td>
 												</tr>
@@ -89,4 +87,36 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Delete Modal -->
+					<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+						<div class="modal-dialog modal-dialog-centered" role="document" >
+							<div class="modal-content">
+								<div class="modal-body">
+									<div class="form-content p-2">
+										<h4 class="modal-title">Delete</h4>
+										<p class="mb-4">Are you sure want to delete?</p>
+										<form id="deleteForm" method="POST" style="display: inline;">
+											@csrf
+											@method('DELETE')
+											<button type="submit" class="btn btn-danger">Yes, Delete</button>
+										</form>
+										<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /Delete Modal -->
 @endsection
+
+@push('script')
+	<script>
+		// Delete Script 
+		$('#delete_modal').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget); 
+			var deleteUrl = button.data('url'); 
+			$('#deleteForm').attr('action', deleteUrl);
+		});
+	</script>
+@endpush

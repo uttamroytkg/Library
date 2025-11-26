@@ -52,6 +52,10 @@
 				aspect-ratio: 1 / 1.2;
     			object-fit: cover;
 			}
+			.profile-header img{
+				aspect-ratio: 1 / 1;
+				object-fit: cover
+			}
 		</style>
 
 		@stack('css')
